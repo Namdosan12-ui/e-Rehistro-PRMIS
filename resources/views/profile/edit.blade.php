@@ -1,29 +1,31 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+<!-- resources/views/profiles/edit.blade.php -->
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
+@extends('layouts.app')
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
+@section('content')
+    <div class="container">
+        <h2>Edit Profile</h2>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
+        <form action="{{ route('profiles.update', $profile->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <div class="form-group">
+                <label for="profile_picture">Profile Picture</label>
+                <input type="file" name="profile_picture" id="profile_picture" class="form-control">
             </div>
-        </div>
+            <div class="form-group">
+                <label for="bio">Bio</label>
+                <textarea name="bio" id="bio" class="form-control">{{ $profile->bio }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" name="phone" id="phone" class="form-control" value="{{ $profile->phone }}">
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" name="address" id="address" class="form-control" value="{{ $profile->address }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
     </div>
-</x-app-layout>
+@endsection

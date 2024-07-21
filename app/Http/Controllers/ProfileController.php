@@ -1,60 +1,64 @@
 <?php
+// app/Http/Controllers/ProfileController.php
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
+    public function index()
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $profiles = Profile::all();
+        return view('profile.index', compact('profiles'));
     }
 
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function create()
     {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $users = User::all();
+        return view('profile.store', compact('users'));
     }
 
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
+    public function store(Request $request)
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'profile_picture' => 'nullable|image',
+            'bio' => 'nullable|string',
+            'phone' => 'nullable|string',
+            'address' => 'nullable|string',
         ]);
 
-        $user = $request->user();
+        Profile::create($request->all());
 
-        Auth::logout();
+        return redirect()->route('profile.index')->with('success', 'Profile created successfully.');
+    }
 
-        $user->delete();
+    public function edit(Profile $profile)
+    {
+        return view('profile.update', compact('profile'));
+    }
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+    public function update(Request $request, Profile $profile)
+    {
+        $request->validate([
+            'profile_picture' => 'nullable|image',
+            'bio' => 'nullable|string',
+            'phone' => 'nullable|string',
+            'address' => 'nullable|string',
+        ]);
 
-        return Redirect::to('/');
+        $profile->update($request->all());
+
+        return redirect()->route('profile.index')->with('success', 'Profile updated successfully.');
+    }
+
+    public function destroy(Profile $profile)
+    {
+        $profile->delete();
+
+        return redirect()->route('profile.index')->with('success', 'Profile deleted successfully.');
     }
 }

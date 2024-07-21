@@ -1,3 +1,597 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* Custom styles */
+.sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+.sidebar a.active,
+.sidebar a:hover {
+    background-color: #4a5568;
+    color: #F5F6FA;
+}
+
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+/* Body Styles */
+body {
+    background: rgba(246, 247, 251, 1);
+    margin: 0;
+    padding: 0;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    width: 240px;
+    background-color: #1D2736;
+    color: white;
+    height: calc(100vh - 57px);
+    top: 57px;
+    left: 0;
+    overflow-y: auto;
+    transition: transform 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+    transform: translateX(-100%);
+
+}
+
+.sidebar.open {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+.sidebar li {
+    border-bottom: 2px solid #344054;
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    color: white;
+    transition: background-color 0.3s, color 0.3s;
+    margin-left: 0.1rem;
+}
+
+.sidebar a:hover {
+    background-color: #4a5568;
+    color: #F5F6FA;
+}
+
+.sidebar a.active {
+    background-color: #4a5568;
+}
+
+.sidebar a .icon {
+    margin-right: 1rem;
+    font-size: 1.25rem;
+}
+
+.sidebar a .nav-text {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+/* Philippine Time Styles */
+.ph-time {
+    display: flex;
+    align-items: flex-end;
+    margin-right: 120px;
+    font-size: 35px;
+    color: #344054;
+    font-weight: 600;
+    gap: 5px;
+    z-index: 1;
+}
+
+.ph-time-label {
+    position: absolute;
+    display: flex;
+    font-size: 14px;
+    color: #344054;
+    font-weight: 300px;
+    letter-spacing: 5px;
+    margin-top: 50px;
+    margin-left: 3px;
+}
+
+.ph-time-element {
+    display: flex;
+    align-items: center;
+    margin: 0 2px;
+    margin-top: -20px;
+}
+
+.ampm {
+    position: absolute;
+    align-items: flex-end;
+    margin-top: -20px;
+    font-size: 60px;
+    color: #344054;
+    gap: 5px;
+}
+
+/* Date and Day Styles */
+.date-day {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: -1px;
+    margin-right: 2;
+    color: #344054;
+    flex-direction: column;
+}
+
+#phDay {
+    font-size: 30px;
+    font-weight: bolder;
+    margin-left: 750px;
+    letter-spacing: 2px;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 20px;
+}
+
+#phFullDate {
+    font-size: 19px;
+    font-weight: bolder;
+    margin-left: 715px;
+    margin-top: -2x;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 20px;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #F5F6FA;
+    border-bottom: 1px solid #E2E8F0;
+    margin-bottom: 1rem;
+}
+
+.content-header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.content-header .user-info {
+    display: flex;
+    align-items: center;
+}
+
+.content-header .user-info a {
+    color: #1D2736;
+    text-decoration: none;
+    margin-left: 1rem;
+}
+
+/* Topbar Styles */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #c3c1c1;
+    color: white;
+    padding: 0 1rem;
+    height: 57px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+/* Style for the user name */
+.topbar .mr-4 {
+    position: absolute;
+    margin-right: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1D2736;
+    right: 80px;
+    top: 20px;
+}
+
+/* Additional styles for user info */
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.user-role {
+    font-size: 13px;
+    font-weight: 400;
+    color: #1D2736;
+    margin-right: 109px;
+    margin-top: 30px;
+}
+/* Form container */
+.topbar form.inline {
+    display: inline;
+}
+
+/* Logout button */
+.topbar form button {
+    position: absolute;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #e51114;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out;
+    right: 30px;
+    top: 20px;
+}
+
+.topbar form button:hover,
+.topbar form button:focus {
+    color: #ccc;
+    outline: none;
+}
+
+.logosidebar {
+    width: 200px;
+    height: 70px;
+    background-size: 20%;
+    background-repeat: no-repeat;
+    background-position: 17px 10px;
+    transition: width 0.3s ease;
+}
+
+.sidebar-toggle-btn {
+    position: fixed;
+    top: -9px;
+    left: 190px;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    z-index: 1000;
+    font-size: 28px;
+}
+
+.logo {
+    color: white;
+    font-size: 20px;
+    font-family: sans-serif;
+    font-weight: 600;
+    padding: 0;
+    margin: 30px;
+    letter-spacing: 10px;
+    z-index: 1000;
+    text-align: center;
+}
+
+.square {
+    position: fixed;
+    background-color: #1D2736;
+    padding: 28px 120px;
+    margin: 0;
+    top: 1px;
+    left: 0;
+    z-index: -1000;
+    box-sizing: border-box;
+}
+
+/* Table Container Index */
+.all-container {
+    width: 100%;
+    margin-top: 80px;
+    margin-left: auto;
+    transition: width 0.3s ease;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    color: #333;
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+}
+
+.all-container:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.all-container.sidebar-open {
+    margin-left: auto;
+    width: 86%;
+}
+
+/* Table Container Edit */
+.all-container1 {
+    position: relative;
+    width: 100%;
+    top: 50px;
+    margin-left: auto;
+    transition: margin-left 0.5s ease, width 0.5s ease; /* Add transition for margin-left and width */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    color: #333;
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+.all-container1.sidebar-open {
+    margin-left: auto; /* Adjust margin as needed */
+    width: 86%; /* Adjust width as needed */
+}
+
+.all-container1:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.header-background1 {
+    position: relative;
+    width: 100%;
+    top: 50px;
+    margin-left: auto;
+    transition: margin-left 0.5s ease, width 0.5s ease; /* Add transition for margin-left and width */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #343a40;
+    height: 100px;
+}
+
+.header-background1.sidebar-open {
+    margin-left: auto; /* Adjust margin as needed */
+    width: 86%; /* Adjust width as needed */
+}
+
+/* All-table Index */
+.all-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.all-table thead {
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+.all-table th,
+.all-table td {
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    text-align: center;
+}
+
+.all-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.all-table tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+.all-table .btn {
+    margin-right: 5px;
+}
+
+.all-table .btn-info{
+    background-color: #5b5b5b;
+    border-color: #5b5b5b;
+    color: white;
+    width: 123px;
+    height: 30px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.all-table .btn-info:hover {
+    background-color: #424242;
+    border-color: #424242;
+    color: white;
+}
+
+.all-table .btn-edit {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #F5F6FA;
+    width: 70px;
+    height: 30px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.all-table .btn-edit:hover {
+    background-color: #036bd9;
+    border-color: #036bd9;
+    color: white;
+}
+
+.all-table .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    width: 90px;
+    height: 30px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.card-body {
+    height: 400px;
+    overflow-y: auto;
+}
+
+.card-body .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+    position: relative;
+    top: 20px;
+    left: auto;
+    width: 150px;
+    height: 38px;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-body i {
+    font-size: 18px;
+    margin-right: 8px;
+}
+
+.card-body .btn-cancel {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+    position: relative;
+    top: -8px;
+    left: 150px;
+    width: 100px;
+    height: 38px;
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-body .btn-cancel:hover {
+    background-color: #be2e3c;
+    color: white;
+}
+
+.card-body1 .btn-success1 {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+    position: relative;
+    top: 20px;
+    left: auto;
+    width: 140px;
+    height: 38px;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: -10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-body1 .btn-success1:hover {
+    background-color: #23923d;
+    color: white;
+}
+
+.card-body1 i {
+    font-size: 18px;
+    margin-right: 8px;
+}
+
+.card-body1 .btn-cancel {
+    background-color: #dc3545;
+    border-color: #9a2732;
+    color: white;
+    position: relative;
+    top: -8px;
+    left: 150px;
+    width: 100px;
+    height: 38px;
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-body1 .btn-cancel:hover {
+    background-color: #be2e3c;
+    color: white;
+}
+
+.all-header {
+    font-family: 'Inter', sans-serif;
+    font-weight: 1000;
+    color: #1D2736;
+}
+
+.all-header i {
+    font-size: 40px;
+    position: relative;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.all-header1 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 1000;
+    color: #fff;
+}
+
+.all-header1 i {
+    font-size: 40px;
+    position: relative;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-group {
+    position: relative;
+    border: 1px solid #ced4da;
+    padding: 15px;
+    width: auto;
+    left: auto;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: #ffffff;
+    color: #495057;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.form-group:hover {
+    background-color: #f8f9fa;
+    border-color: #adb5bd;
+    color: #212529;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.topbar .logo img {
+    margin-left: -40px;
+    width: 85px;
+    height: 40px;
+}
+
+.custom-select {
+    width: 170px;
+}

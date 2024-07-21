@@ -1,0 +1,335 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+/* Body Styles */
+body {
+    background: rgba(246, 247, 251, 1);
+    margin: 0;
+    padding: 0;
+}
+
+/* Topbar Styles */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(217, 217, 217, 1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar Styles */
+.navigationbar {
+    width: 240px;
+    height: 57px;
+    background-color: #344054;
+    display: flex;
+    position: relative;
+}
+
+.logosidebar {
+    width: 200px;
+    height: 70px;
+    background-size: 20%;
+    background-repeat: no-repeat;
+    background-position: 17px 10px;
+}
+
+.navigationbar::before {
+    content: "";
+    position: absolute;
+    top: 19px;
+    bottom: 0;
+    left: 61px;
+    width: 3px;
+    height: 19px;
+    background-color: #F8796B;
+}
+
+.logo {
+    color: white;
+    font-size: 15px;
+    font-family: sans-serif;
+    font-weight: 600;
+    padding-left: 70px;
+    float: left;
+    padding-top: 21px;
+    letter-spacing: 10px;
+}
+
+/* Sidebar Styles */
+.sidebar-nav {
+    position: fixed;
+    left: -240px;
+    width: 240px;
+    height: 100%;
+    background-color: #404E67;
+    transition: all 0.5s ease;
+}
+
+.sidebar-nav ul a {
+    display: block;
+    height: 100%;
+    width: 100%;
+    line-height: 65px;
+    font-size: 15px;
+    font-weight: 200;
+    color: #F5F6FA;
+    padding-left: 22px;
+    box-sizing: border-box;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+    transition: 0.1s;
+    text-decoration: none;
+    font-family: "Aurulent Sans", sans-serif;
+}
+
+.sidebar-nav ul li:hover a {
+    color: #F17C74;
+}
+
+.sidebar-nav ul a i {
+    margin-right: 12px;
+}
+
+/* Check Button Styles */
+#check {
+    display: none;
+}
+
+label #btn,
+label #cancel {
+    position: absolute;
+    cursor: pointer;
+    color: white;
+    padding: 6px 12px;
+    left: 190px;
+    top: 15px;
+    font-size: 18px;
+}
+
+label #cancel{
+    z-index: 1;
+    display: none;
+}
+
+#check:not(:checked) ~ label #btn {
+    display: none;
+}
+
+#check:not(:checked) ~ label #cancel {
+    display: block;
+}
+
+/* Philippine Time Styles */
+.ph-time {
+    display: flex;
+    align-items: flex-end;
+    margin-right: 120px;
+    font-size: 35px;
+    color: #344054;
+    font-weight: 600;
+    gap: 5px;
+}
+
+.ph-time-label {
+    position: absolute;
+    display: flex;
+    font-size: 14px;
+    color: #344054;
+    font-weight: 300px;
+    letter-spacing: 5px;
+    margin-top: 50px;
+    margin-left: 3px;
+}
+
+.ph-time-element {
+    display: flex;
+    align-items: center;
+    margin: 0 2px;
+    margin-top: -20px;
+}
+
+.ampm {
+    position: absolute;
+    align-items: flex-end;
+    margin-top: -20px;
+    font-size: 60px;
+    color: #344054;
+    gap: 5px;
+}
+
+/* Date and Day Styles */
+.date-day {
+    display: flex;
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically */
+    text-align: center;
+    margin-top: -1px;
+    margin-right: 2;
+    color: #344054;
+    flex-direction: column; /* Arrange day and date vertically */
+}
+
+#phDay {
+    font-size: 30px;
+    font-weight: bolder;
+    margin-left: 750px;
+    letter-spacing: 2px;
+    max-width: 100%; /* Prevents overflow */
+    white-space: nowrap; /* Prevents text wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adds ellipsis if text is too long */
+    padding: 0 20px; /* Adds padding to give space for longer text */
+}
+
+#phFullDate {
+    font-size: 19px;
+    font-weight: bolder;
+    margin-left: 715px;
+    margin-top: -2x;
+    max-width: 100%; /* Prevents overflow */
+    white-space: nowrap; /* Prevents text wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adds ellipsis if text is too long */
+    padding: 0 20px; /* Adds padding to give space for longer text */
+}
+
+/* Date-Time Container Styles */
+.topbar::before {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 4px;
+    left: 1190px;
+    height: 50px;
+    background-color: #344054;
+    margin: 0 20px;
+}
+
+/* Rectangle Styles */
+.rectangle {
+    position: absolute;
+    width: calc(100% - 100px);
+    height: 600px;
+    background-color: white;
+    top: 93px;
+    left: 47px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    border: 2px solid rgba(229, 229, 229, 1);
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.rectangle::after {
+    content: "";
+    position: absolute;
+    top: 95px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #dddee2;
+}
+
+/* Container Styles */
+.container {
+    display: flex;
+}
+
+/* Sidebar Toggle Styles */
+#check:checked ~ .container .sidebar-nav {
+    left: 0;
+}
+
+#check:checked ~ .container .rectangle {
+    left: 287px;
+    width: calc(100% - 340px);
+}
+
+/* Rectangle Content Styles */
+.rectangle-content {
+    font-family: sans-serif;
+    font-weight: 600;
+    padding: 20px;
+    color: #343f53;
+    font-size: 16px;
+}
+
+.rectangle-content i {
+    margin-right: 2px;
+    font-size: 30px;
+}
+
+.rectangle-content span {
+    font-size: 28px;
+    text-decoration: underline;
+    font-weight: 800;
+}
+
+/* Add Patient Button Styles */
+#addpatientbtn {
+    display: flex;
+    position: absolute;
+    padding: 8px;
+    border: none;
+    border-radius: 2px;
+    background-color: #09AA72;
+    color: white;
+    cursor: pointer;
+    top: 28px;
+    right: 25px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    outline: none;
+}
+
+
+#addpatientbtn:hover {
+    background-color: #078458;
+}
+
+#addpatientbtn .icon-container {
+    position: absolute;
+    top: 9px;
+    left: 15px;
+    font-size: 23px;
+}
+
+#addpatientbtn .text-container {
+    font-size: 18px;
+    margin-top: 5px;
+    margin-right: 8px;
+    margin-left: 35px;
+}
+
+/* Search Bar Styles */
+.search{
+    position: absolute;
+    top: 124px;
+    left: 1111px;
+    color: #344054;
+}
+.search-bar {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    top: 115px;
+    left: 1183px;
+    border-radius: 2px;
+}
+
+.search-bar input[type="text"] {
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: inherit;
+    font-size: 16px;
+    color: #344054;
+    outline-color: #344054;
+}
+
