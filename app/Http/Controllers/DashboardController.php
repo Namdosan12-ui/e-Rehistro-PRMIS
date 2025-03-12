@@ -6,12 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Patient;
 use App\Models\LaboratoryService;
 use App\Models\Transaction;
+use App\Models\Queue;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        // Basic counts
         $patientCount = Patient::count();
         $laboratoryServiceCount = LaboratoryService::count();
         $transactionCount = Transaction::count();
@@ -36,11 +38,27 @@ class DashboardController extends Controller
                 return $item;
             });
 
+        // Get top laboratory services
         $topLaboratoryServices = LaboratoryService::withCount('transactions')
             ->orderBy('transactions_count', 'desc')
             ->take(5)
             ->get();
 
-        return view('dashboard.index', compact('patientCount', 'laboratoryServiceCount', 'transactionCount', 'monthlyPatients', 'monthlyRevenue', 'topLaboratoryServices'));
+        // Fetch pending and in-progress queues
+        $pendingQueues = Queue::with(['transaction.patient', 'transaction.services'])
+            ->whereIn('status', ['pending', 'in_progress'])
+            ->orderBy('created_at', 'asc')
+            ->take(5)
+            ->get();
+
+        return view('dashboard.index', compact(
+            'patientCount',
+            'laboratoryServiceCount',
+            'transactionCount',
+            'monthlyPatients',
+            'monthlyRevenue',
+            'topLaboratoryServices',
+            'pendingQueues'
+        ));
     }
 }

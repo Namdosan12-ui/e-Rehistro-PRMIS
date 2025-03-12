@@ -6,18 +6,37 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Queue;
 
+
 class Transaction extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'patient_id', 'date', 'total_payments', 'last_meal',
-        'physician', 'radiologic_technologist',
-        'drug_test_purpose', 'other_purpose_specify', // Include other_purpose_specify for drug_test_purpose
-        'medication_past_30_days', 'alcohol_past_24_hours',
-        'sample_type', 'confirmatory_testing_agreement',
+        'patient_id',
+        'consultation_id',
+        'date',
+        'total_payments',
+        'discount_id',
+        'last_meal',
+        'physician',
+        'radiologic_technologist',
+        'drug_test_purpose',
+        'other_purpose_specify',
+        'medication_past_30_days',
+        'alcohol_past_24_hours',
+        'sample_type',
+        'confirmatory_testing_agreement',
         'sample_acknowledgement',
+        'symptoms',
+        'diagnoses',
+        'treatment_plan',
+        'payment_status',
+        'notes',
+        'discount_type',
+    'manual_discount_name',
+    'manual_discount_percentage',
+    'manual_discount_remarks'
     ];
-    
 
     protected static function boot()
     {
@@ -43,6 +62,12 @@ class Transaction extends Model
         return $this->belongsTo(Patient::class);
     }
 
+    public function consultation()
+    {
+        return $this->belongsTo(Consultation::class);
+    }
+
+    // Keep your existing relationships
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -56,12 +81,7 @@ class Transaction extends Model
     public function laboratory_services()
     {
         return $this->belongsToMany(LaboratoryService::class, 'laboratory_service_transaction', 'transaction_id', 'laboratory_service_id')
-                    ->withPivot('fee'); // Assuming 'fee' is the additional pivot column you have
-    }
-
-    public function laboratoryServices()
-    {
-        return $this->belongsToMany(LaboratoryService::class, 'laboratory_service_transaction', 'transaction_id', 'laboratory_service_id');
+                    ->withPivot('fee');
     }
 
     public function queue()
@@ -69,3 +89,4 @@ class Transaction extends Model
         return $this->hasOne(Queue::class);
     }
 }
+

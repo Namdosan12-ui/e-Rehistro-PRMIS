@@ -7,19 +7,12 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
+        if (Auth::check() && Auth::user()->role->role_name === 'Admin') {
             return $next($request);
         }
 
-        return redirect('/'); // Redirect to home if not admin
+        return redirect('/')->with('error', 'Unauthorized access');
     }
 }

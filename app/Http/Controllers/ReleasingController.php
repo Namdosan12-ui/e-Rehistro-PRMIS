@@ -3,22 +3,23 @@
 // app/Http/Controllers/ReleasingController.php
 
 namespace App\Http\Controllers;
+
 use App\Models\Releasing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ResultMail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Carbon;
 
 class ReleasingController extends Controller
 {
     public function index()
     {
-        $releasings = Releasing::with('transaction.patient')->get();
+        // Fetch releasings in descending order by created_at
+        $releasings = Releasing::with('transaction.patient')->orderBy('created_at', 'desc')->get();
         return view('releasings.index', compact('releasings'));
     }
-    
+
     public function upload(Request $request, $id)
     {
         $request->validate([

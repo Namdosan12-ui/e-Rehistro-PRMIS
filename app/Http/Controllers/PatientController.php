@@ -4,147 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PatientController extends Controller
 {
-    public function index()
-    {
-        $patients = Patient::all();
-        return view('patients.index', compact('patients'));
-    }
-
-    public function create()
-    {
-        $vaccineTypes = [
-            'Pfizer–BioNTech',
-            'Oxford–AstraZeneca',
-            'Sinopharm BIBP',
-            'Moderna',
-            'Janssen',
-            'CoronaVac',
-            'Covaxin',
-            'Novavax',
-            'Convidecia',
-            'Sanofi–GSK',
-        ];
-
-        $boosterTypes = [
-            'Pfizer–BioNTech',
-            'Oxford–AstraZeneca',
-            'Sinopharm BIBP',
-            'Moderna',
-            'Janssen',
-            'CoronaVac',
-            'Covaxin',
-            'Novavax',
-            'Convidecia',
-            'Sanofi–GSK',
-        ];
-
-        $civilStatusOptions = [
-            'single' => 'Single',
-            'married' => 'Married',
-            'separated' => 'Separated',
-            'divorced' => 'Divorced',
-            'widowed' => 'Widowed',
-        ];
-
-        return view('patients.create', compact('vaccineTypes', 'boosterTypes', 'civilStatusOptions'));
-    }
-
     public function store(Request $request)
-    {
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'date_of_birth' => 'required|date',
-            'gender' => 'required|string|max:10',
-            'contact_information' => 'required|string|max:255',
-            'email_address' => 'required|email|max:255',
-            'address' => 'required|string|max:255',
-            'civil_status' => 'required|in:single,married,separated,divorced,widowed',
-            'philhealth_number' => 'nullable|string|max:255',
-            'pwd_id_number' => 'nullable|string|max:255',
-            'occupation' => 'required|string|max:255',
-            'senior_citizen_card_number' => 'nullable|string|max:255',
-            'emergency_contact_name' => 'required|string|max:255',
-            'emergency_contact_mobile' => 'required|string|max:255',
-            'emergency_contact_relation' => 'required|string|max:255',
-            'vaccine_type' => 'required|string|max:255',
-            'first_dose_date' => 'required|date|nullable',
-            'second_dose_date' => 'required|date|nullable',
-            'booster_type' => 'required|string|max:255',
-            'first_booster_date' => 'required|date|nullable',
-            'second_booster_date' => 'required|date|nullable',
-        ]);
-
-        $data = $request->all();
-        $data['philhealth_number'] = $data['philhealth_number'] ?? 'NONE';
-        $data['pwd_id_number'] = $data['pwd_id_number'] ?? 'NONE';
-        $data['senior_citizen_card_number'] = $data['senior_citizen_card_number'] ?? 'NONE';
-
-        Patient::create($data);
-
-        return redirect()->route('patients.index')->with('success', 'Patient created successfully.');
-    }
-
-    public function show($id)
-    {
-        $patient = Patient::findOrFail($id);
-    
-        $civilStatusOptions = [
-            'single' => 'Single',
-            'married' => 'Married',
-            'widowed' => 'Widowed',
-            'divorced' => 'Divorced',
-            // Add other options as needed
-        ];
-    
-        return view('patients.show', compact('patient', 'civilStatusOptions'));
-    }
-
-    public function edit($id)
-    {
-        $patient = Patient::findOrFail($id);
-
-        $vaccineTypes = [
-            'Pfizer–BioNTech',
-            'Oxford–AstraZeneca',
-            'Sinopharm BIBP',
-            'Moderna',
-            'Janssen',
-            'CoronaVac',
-            'Covaxin',
-            'Novavax',
-            'Convidecia',
-            'Sanofi–GSK',
-        ];
-
-        $boosterTypes = [
-            'Pfizer–BioNTech',
-            'Oxford–AstraZeneca',
-            'Sinopharm BIBP',
-            'Moderna',
-            'Janssen',
-            'CoronaVac',
-            'Covaxin',
-            'Novavax',
-            'Convidecia',
-            'Sanofi–GSK',
-        ];
-
-        $civilStatusOptions = [
-            'single' => 'Single',
-            'married' => 'Married',
-            'separated' => 'Separated',
-            'divorced' => 'Divorced',
-            'widowed' => 'Widowed',
-        ];
-
-        return view('patients.edit', compact('patient', 'vaccineTypes', 'boosterTypes', 'civilStatusOptions'));
-    }
-
-    public function update(Request $request, $id)
     {
         $request->validate([
             'first_name' => 'required|string|max:255',
@@ -152,44 +16,59 @@ class PatientController extends Controller
             'date_of_birth' => 'required|date',
             'gender' => 'required|in:male,female',
             'contact_information' => 'required|string|max:255',
-            'email_address' => 'required|string|email|max:255|unique:patients,email_address,'.$id,
-            'address' => 'required|string|max:255',
-            'civil_status' => 'required|in:single,married,separated,divorced,widowed',
+            'email_address' => 'required|email|max:255',
+            'address' => 'required|string',
+            'civil_status' => 'required|in:single,married,divorced,widowed',
             'occupation' => 'required|string|max:255',
-            'emergency_contact_name' => 'required|string|max:255',
-            'emergency_contact_mobile' => 'required|string|max:255',
-            'emergency_contact_relation' => 'required|string|max:255',
-            'philhealth_number' => 'nullable|string|max:255',
-            'pwd_id_number' => 'nullable|string|max:255',
-            'senior_citizen_card_number' => 'nullable|string|max:255',
+            'profile_picture' => 'nullable|string',
         ]);
 
-        $patient = Patient::findOrFail($id);
+        // Handle profile picture
+        $profilePicture = null;
+        if ($request->profile_picture) {
+            // Remove the "data:image/jpeg;base64," part and decode
+            $image = base64_decode(explode(',', $request->profile_picture)[1]);
 
-        $data = $request->all();
-        $data['philhealth_number'] = $data['philhealth_number'] ?? 'NONE';
-        $data['pwd_id_number'] = $data['pwd_id_number'] ?? 'NONE';
-        $data['senior_citizen_card_number'] = $data['senior_citizen_card_number'] ?? 'NONE';
+            // Generate unique filename
+            $filename = time() . '_' . Str::random(10) . '.jpg';
 
-        $patient->update($data);
+            // Save file to public/storage/patient_photos
+            file_put_contents(public_path('storage/patient_photos/' . $filename), $image);
+            $profilePicture = 'patient_photos/' . $filename;
+        }
 
-        return redirect()->route('patients.index')->with('success', 'Patient updated successfully.');
+        // Create patient record
+        $patient = Patient::create([
+            'profile_picture' => $profilePicture,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'date_of_birth' => $request->date_of_birth,
+            'gender' => $request->gender,
+            'contact_information' => $request->contact_information,
+            'email_address' => $request->email_address,
+            'address' => $request->address,
+            'civil_status' => $request->civil_status,
+            'occupation' => $request->occupation,
+            'patient_type_id' => 2, // Set as Walk-in by default
+            'philhealth_number' => 'NONE',
+            'pwd_id_number' => 'NONE',
+            'senior_citizen_card_number' => 'NONE',
+            'emergency_contact_name' => 'Not Provided',
+            'emergency_contact_mobile' => 'Not Provided',
+            'emergency_contact_relation' => 'Not Provided',
+            'vaccine_type' => 'Not Provided',
+            'booster_type' => 'Not Provided',
+            'first_dose_date' => null,
+            'second_dose_date' => null,
+            'first_booster_date' => null,
+            'second_booster_date' => null,
+        ]);
+
+        return redirect()->route('patient.registration-slip', $patient->id);
     }
 
-    public function destroy($id)
+    public function showRegistrationSlip(Patient $patient)
     {
-        $patient = Patient::findOrFail($id);
-        $patient->delete();
-
-        return redirect()->route('patients.index')->with('success', 'Patient has been deleted successfully.');
+        return view('registration-slip', compact('patient'));
     }
-
-    public function showTransactions($id)
-    {
-        $patient = Patient::findOrFail($id);
-        $transactions = $patient->transactions()->orderBy('created_at', 'desc')->paginate(10); // Example: Paginate by 10 transactions per page
-
-        return view('patients.transactions', compact('patient', 'transactions'));
-    }
-    
 }

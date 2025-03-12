@@ -1,20 +1,36 @@
 <?php
 // app/Models/Releasing.php
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Transaction;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Releasing extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'transaction_id',
+        'result_file',
+        'released_at',
+        'released_via_email',
+        'releasing_status'
+    ];
 
-    protected $fillable = ['transaction_id', 'released_at', 'result_file'];
+    protected $casts = [
+        'released_at' => 'datetime',
+        'released_via_email' => 'boolean'
+    ];
 
-    public function transaction()
+    public function transaction(): BelongsTo
     {
         return $this->belongsTo(Transaction::class);
+    }
+
+    public function markAsReleased(): void
+    {
+        $this->update([
+            'released_at' => now(),
+            'released_via_email' => true,
+            'releasing_status' => 'released'
+        ]);
     }
 }
